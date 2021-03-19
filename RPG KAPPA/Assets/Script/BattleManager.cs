@@ -28,6 +28,7 @@ public class BattleManager : MonoBehaviour
     public GameObject moveUi;
     public GameObject battleCanvas;
     public GameObject backpackCanvas;
+    public GameObject pokemonCanvas;
 
     public GameObject pokemonBackackContainer;
     public Transform startPosPokemonBackpack;
@@ -35,13 +36,16 @@ public class BattleManager : MonoBehaviour
     public List<Text> button;
     public List<Text> movesPP;
     public List<Moves> moves;
-
-
+    //Chose Pokemon To Interact
+    public int chosenPokemon;
+    public int chosenItem;
+    public int howManyHpAdd;
 
     private void Awake()
     {
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         mouseLook = GameObject.Find("Player").GetComponentInChildren<MouseLook>();
+        moveUi.SetActive(false);
     }
     void Start()
     {
@@ -70,20 +74,56 @@ public class BattleManager : MonoBehaviour
     }
     public void OnAttackButtonAttack()
     {
+        combatButtonUi.SetActive(false);
+        moveUi.SetActive(true);
         if (state != BattleState.PLAYERTURN)
             return;
         StartCoroutine(ChoseMove());
     }
     public void OnAttackBackpack()
     {
-        backpackCanvas.SetActive(true);
-        backpack.ShowBackpack();
-        //dokonczyc jutro wybieranie itemu, poka i leczenie 
+        combatButtonUi.SetActive(false);
+        moveUi.SetActive(false);
+        pokemonCanvas.SetActive(true);
+        ShowPokemonInBattle();
+
+        //backpackCanvas.SetActive(true);
+        //backpack.ShowBackpack();
 
     }
-    
+    public void ShowPokemonInBattle()
+    {
+        
+            for (int i = 0; i < playerPrefab.Count; i++)
+            {
+                Vector2 spawnPos = new Vector2(startPosPokemonBackpack.GetComponent<RectTransform>().transform.position.x,
+                    startPosPokemonBackpack.GetComponent<RectTransform>().transform.position.y - (110 * i * 0.5f));
+                GameObject buffor = Instantiate(pokemonBackackContainer, spawnPos, Quaternion.identity, startPosPokemonBackpack);
+                var container = buffor.GetComponent<PokemonContainer>();
+                container.pokemonText.text = playerPrefab[i].GetComponent<Unit>().unitName;
+                // dodać slider i image
+                container.count = i;
+            }
+            
+    }
+    public void ChosePokemonToHeal()
+    {
+        pokemonCanvas.SetActive(false);
+        backpackCanvas.SetActive(true);
+        backpack.ShowBackpack();
+
+    }
+    public void HealPokemon()
+    {
+        Debug.Log(playerPrefab[chosenPokemon].GetComponent<Unit>().currentHp);
+        playerPrefab[chosenPokemon].GetComponent<Unit>().currentHp += howManyHpAdd;
+        backpackCanvas.SetActive(false);
+        pokemonCanvas.SetActive(false);
+        //jutro dorobić zmniejszanie countu itemów, reset ui pokemonów aby pokazywało normalnie hp, zrobić state= itd... :)
+    }
     public IEnumerator ChoseMove()
     {
+ 
         for (int i = 0; i < 4; i++)
         {
             moves.Add(playerUnit.pokemonSpells[i]);
@@ -123,7 +163,6 @@ public class BattleManager : MonoBehaviour
             StartCoroutine(EnemyTurn());
         }
     }
-
     IEnumerator EnemyTurn()
     {
         dialogueText.text = enemyUnit.unitName + "Attack";

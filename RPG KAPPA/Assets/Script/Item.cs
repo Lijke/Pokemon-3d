@@ -5,7 +5,7 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public string itemName;
-    public string healthGain;
+    public int healthGain;
     public int index;
 
 }

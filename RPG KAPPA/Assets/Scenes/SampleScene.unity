@@ -2065,7 +2065,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 268}
+  m_AnchoredPosition: {x: 0, y: 263}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &705507993
@@ -4571,6 +4571,7 @@ MonoBehaviour:
   moveUi: {fileID: 795678119}
   battleCanvas: {fileID: 921211474}
   backpackCanvas: {fileID: 569531404}
+  pokemonCanvas: {fileID: 36283884}
   pokemonBackackContainer: {fileID: 5752765935386269362, guid: b0eb0f706466d24488a5bebc162d2e18,
     type: 3}
   startPosPokemonBackpack: {fileID: 680314223}
@@ -4585,6 +4586,9 @@ MonoBehaviour:
   - {fileID: 356836527}
   - {fileID: 325177777}
   moves: []
+  chosenPokemon: 0
+  chosenItem: 0
+  howManyHpAdd: 0
 --- !u!4 &1796336898
 Transform:
   m_ObjectHideFlags: 0
@@ -4932,7 +4936,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1796336897}
-        m_MethodName: OnAttackButton
+        m_MethodName: OnAttackButtonAttack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

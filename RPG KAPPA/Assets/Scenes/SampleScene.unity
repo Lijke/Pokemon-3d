@@ -1331,7 +1331,7 @@ GameObject:
   m_Component:
   - component: {fileID: 491530235}
   m_Layer: 5
-  m_Name: Content
+  m_Name: PokemonContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3394,7 +3394,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1412141984}
   m_Layer: 5
-  m_Name: Content
+  m_Name: PokemonContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4558,10 +4558,10 @@ MonoBehaviour:
   state: 0
   playerPrefab:
   - {fileID: 8910435129451644118, guid: c487cd7d77dfbbe4cade429ed0686524, type: 3}
-  - {fileID: 2654424884624713086, guid: adf6778e55fb1ba45a44fb2a3e20d972, type: 3}
-  - {fileID: 7740541982804959142, guid: 86d8846bfc5ee3d43a0aefb5cdc7759b, type: 3}
   enemyPrefab:
-  - {fileID: 8910435129451644118, guid: c487cd7d77dfbbe4cade429ed0686524, type: 3}
+  - {fileID: 2654424884624713086, guid: adf6778e55fb1ba45a44fb2a3e20d972, type: 3}
+  playerGameObject: []
+  enemyGameObject: []
   playerTransform: {fileID: 103160308}
   enemyTransform: {fileID: 1081082389}
   dialogueText: {fileID: 865726309}
@@ -4589,6 +4589,7 @@ MonoBehaviour:
   chosenPokemon: 0
   chosenItem: 0
   howManyHpAdd: 0
+  pokemonContent: {fileID: 1412141983}
 --- !u!4 &1796336898
 Transform:
   m_ObjectHideFlags: 0

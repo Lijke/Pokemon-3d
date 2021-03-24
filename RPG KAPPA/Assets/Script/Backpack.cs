@@ -8,7 +8,10 @@ public class Backpack : MonoBehaviour
     public GameObject backpackCanvas;
     public GameObject pokemonContainer;
     public Transform startPosToSpawnContainer;
-
+    private void Start()
+    {
+        Instantiate(item[0], gameObject.transform); 
+    }
     public void ShowBackpack()
     {
         for (int i = 0; i < item.Count; i++)

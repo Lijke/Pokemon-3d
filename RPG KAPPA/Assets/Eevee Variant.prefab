@@ -17,7 +17,7 @@ MonoBehaviour:
   unityLevel: 1
   damage: 1
   maxHp: 100
-  currentHp: 20
+  currentHp: 80
   pokemonSpells:
   - {fileID: 11400000, guid: 25aad8536f34c2940ad91df202883b0f, type: 2}
   - {fileID: 11400000, guid: da41929b1125f1d43ad350aa458f0563, type: 2}

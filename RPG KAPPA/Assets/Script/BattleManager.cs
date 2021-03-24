@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public enum BattleState { START,PLAYERTURN,ENEMYTURN,WON,LOST}
+public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleManager : MonoBehaviour
 {
     PlayerMovement playerMovement;
@@ -12,7 +12,8 @@ public class BattleManager : MonoBehaviour
 
     public List<GameObject> playerPrefab;
     public List<GameObject> enemyPrefab;
-
+    public List<GameObject> playerGameObject;
+    public List<GameObject> enemyGameObject;
     public Transform playerTransform;
     public Transform enemyTransform;
 
@@ -40,7 +41,7 @@ public class BattleManager : MonoBehaviour
     public int chosenPokemon;
     public int chosenItem;
     public int howManyHpAdd;
-
+    public GameObject pokemonContent;
     private void Awake()
     {
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
@@ -59,8 +60,10 @@ public class BattleManager : MonoBehaviour
     {
         GameObject playerGO = Instantiate(playerPrefab[0], playerTransform);
         playerUnit = playerGO.GetComponent<Unit>();
-        GameObject enemyGo =Instantiate(enemyPrefab[0], enemyTransform);
+        playerGameObject.Add(playerGO);
+        GameObject enemyGo = Instantiate(enemyPrefab[0], enemyTransform);
         enemyUnit = enemyGo.GetComponent<Unit>();
+        enemyGameObject.Add(enemyGo);
 
         playerHud.SetHud(playerUnit);
         enemyHud.SetHud(enemyUnit);
@@ -93,18 +96,19 @@ public class BattleManager : MonoBehaviour
     }
     public void ShowPokemonInBattle()
     {
-        
-            for (int i = 0; i < playerPrefab.Count; i++)
-            {
-                Vector2 spawnPos = new Vector2(startPosPokemonBackpack.GetComponent<RectTransform>().transform.position.x,
-                    startPosPokemonBackpack.GetComponent<RectTransform>().transform.position.y - (110 * i * 0.5f));
-                GameObject buffor = Instantiate(pokemonBackackContainer, spawnPos, Quaternion.identity, startPosPokemonBackpack);
-                var container = buffor.GetComponent<PokemonContainer>();
-                container.pokemonText.text = playerPrefab[i].GetComponent<Unit>().unitName;
-                // dodać slider i image
-                container.count = i;
-            }
-            
+
+        for (int i = 0; i < playerPrefab.Count; i++)
+        {
+            Vector2 spawnPos = new Vector2(startPosPokemonBackpack.GetComponent<RectTransform>().transform.position.x,
+                startPosPokemonBackpack.GetComponent<RectTransform>().transform.position.y - (110 * i * 0.5f));
+            GameObject buffor = Instantiate(pokemonBackackContainer, spawnPos, Quaternion.identity, startPosPokemonBackpack);
+            var container = buffor.GetComponent<PokemonContainer>();
+            container.pokemonText.text = playerGameObject[i].GetComponent<Unit>().unitName;
+            container.pokemonSlider.value = playerGameObject[i].GetComponent<Unit>().currentHp / playerGameObject[i].GetComponent<Unit>().maxHp;
+            // dodać slider i image
+            container.count = i;
+        }
+
     }
     public void ChosePokemonToHeal()
     {
@@ -115,15 +119,22 @@ public class BattleManager : MonoBehaviour
     }
     public void HealPokemon()
     {
-        Debug.Log(playerPrefab[chosenPokemon].GetComponent<Unit>().currentHp);
-        playerPrefab[chosenPokemon].GetComponent<Unit>().currentHp += howManyHpAdd;
+        playerGameObject[chosenPokemon].GetComponent<Unit>().currentHp += howManyHpAdd;
+        playerHud.SetHud(playerUnit);
         backpackCanvas.SetActive(false);
         pokemonCanvas.SetActive(false);
+        combatButtonUi.SetActive(true);
+        foreach (Transform child in pokemonContent.transform)
+        {
+            if(child.name!= "StartPos")
+                GameObject.Destroy(child.gameObject);
+        }
+        backpack.item[chosenItem].GetComponent<Item>().count -= 1;
         //jutro dorobić zmniejszanie countu itemów, reset ui pokemonów aby pokazywało normalnie hp, zrobić state= itd... :)
     }
     public IEnumerator ChoseMove()
     {
- 
+
         for (int i = 0; i < 4; i++)
         {
             moves.Add(playerUnit.pokemonSpells[i]);
@@ -132,7 +143,7 @@ public class BattleManager : MonoBehaviour
         {
             button[i].text = moves[i].nameMove;
             movesPP[i].text = moves[i].currentPowerPoint.ToString();
-        } 
+        }
 
         yield return new WaitForSeconds(2);
     }
@@ -168,9 +179,8 @@ public class BattleManager : MonoBehaviour
         dialogueText.text = enemyUnit.unitName + "Attack";
         yield return new WaitForSeconds(2);
         bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
-        playerHud.SetHp(playerUnit.currentHp);
         yield return new WaitForSeconds(2);
-        if(isDead)
+        if (isDead)
         {
             state = BattleState.LOST;
             EndBattle();
@@ -183,7 +193,7 @@ public class BattleManager : MonoBehaviour
     }
     void EndBattle()
     {
-        if(state== BattleState.WON)
+        if (state == BattleState.WON)
         {
             dialogueText.text = "WON";
         }

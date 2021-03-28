@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebc8ac8386c6c2e47acd37b97cbdacea, type: 3}
-  m_Name: bones
+  m_Script: {fileID: 11500000, guid: d3ec1244e2ebbbd4fb00e948eb8d5f23, type: 3}
+  m_Name: Cos
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2562515080803631091, guid: 2140f8b1093b8ee4d9cff02b1c4a58df, type: 3}
-  type: 2
-  description: 
+  prefab: {fileID: 5928149431082392748, guid: 13bd319ca4a79f44abe8dad624d6aa19, type: 3}
+  type: 1
+  namePokemon: Cos
+  currentHealth: 100
+  maxHealth: 100

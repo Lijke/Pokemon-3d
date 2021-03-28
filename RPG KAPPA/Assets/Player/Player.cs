@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public InventoryObject inventory;
-
+    public PokemonInventory pokemonInventory;
     private void OnTriggerEnter(Collider other)
     {
         var item = other.GetComponentInParent<Item>();

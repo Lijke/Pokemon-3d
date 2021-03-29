@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 public class DisplayPokemonInventory : MonoBehaviour
@@ -27,6 +28,7 @@ public class DisplayPokemonInventory : MonoBehaviour
             var obj = Instantiate(pokemonInventry.ContainerPokemon[i].item.prefab, Vector3.zero, Quaternion.identity, transform);
             obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
             obj.GetComponentInChildren<TextMeshProUGUI>().text = pokemonInventry.ContainerPokemon[i].item.namePokemon;
+            obj.GetComponentInChildren<Slider>().value = pokemonInventry.ContainerPokemon[i].item.currentHealth / pokemonInventry.ContainerPokemon[i].item.maxHealth;
         }
     }
     public Vector3 GetPosition(int i)

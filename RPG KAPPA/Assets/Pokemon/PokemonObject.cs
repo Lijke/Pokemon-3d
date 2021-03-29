@@ -15,6 +15,7 @@ public enum PokemonType
 public abstract class PokemonObject : ScriptableObject
 {
     public GameObject prefab;
+    public GameObject prefab_pokemon;
     public PokemonType type;
     public string namePokemon;
     public int currentHealth;

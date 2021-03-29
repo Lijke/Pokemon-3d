@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ec1244e2ebbbd4fb00e948eb8d5f23, type: 3}
   m_Name: Enemy
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
-  prefab_pokemon: {fileID: 0}
+  prefab: {fileID: 5928149431082392748, guid: 13bd319ca4a79f44abe8dad624d6aa19, type: 3}
+  prefab_pokemon: {fileID: 100104, guid: b3ac7d864261a9746b9ce84cdf06505d, type: 3}
   type: 1
-  namePokemon: 
-  currentHealth: 0
-  maxHealth: 0
+  namePokemon: Martyna
+  currentHealth: 20
+  maxHealth: 20

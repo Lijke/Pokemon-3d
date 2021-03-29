@@ -5,6 +5,7 @@ using UnityEngine;
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleSystem : MonoBehaviour
 {
+    BattleState state;
     public Transform playerPokemonTransform;
     public Transform enemyPokemonTransform;
 
@@ -18,6 +19,12 @@ public class BattleSystem : MonoBehaviour
 
     private void Start()
     {
+        state = BattleState.START;
+        SetupBattle();
+
+    }
+    public IEnumerator SetupBattle()
+    {
         //PLAYERSPAWN OBJECT + UPDATEUI
         var playerPokemon = Instantiate(pokemonInventry.ContainerPokemon[0].item.prefab_pokemon, Vector3.zero, Quaternion.identity, transform);
         playerPokemon.GetComponent<Transform>().position = playerPokemonTransform.position;
@@ -26,6 +33,11 @@ public class BattleSystem : MonoBehaviour
         var enemyPokemon = Instantiate(pokemonInventry.ContainerPokemon[1].item.prefab_pokemon, Vector3.zero, Quaternion.identity, transform);
         enemyPokemon.GetComponent<Transform>().position = enemyPokemonTransform.position;
         enemyHud.SetPlayerHud(pokemonInventry.ContainerPokemon[1].item);
+        yield return new WaitForSeconds(0f);
+        PlayerTurn();
+    }
+    public void PlayerTurn()
+    {
 
     }
 }

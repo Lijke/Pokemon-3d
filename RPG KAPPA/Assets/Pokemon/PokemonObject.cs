@@ -20,6 +20,7 @@ public abstract class PokemonObject : ScriptableObject
     public string namePokemon;
     public int currentHealth;
     public int maxHealth;
+    public List<MovesObject> moves;
 
     
 }

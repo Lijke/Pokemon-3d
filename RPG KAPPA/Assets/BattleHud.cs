@@ -11,8 +11,8 @@ public class BattleHud : MonoBehaviour
 
     public void SetPlayerHud(PokemonObject pokemonObject)
     {
-        slider.value = pokemonObject.currentHealth / pokemonObject.maxHealth;
-        name.text = pokemonObject.name;
+        slider.value =(float) pokemonObject.currentHealth /(float) pokemonObject.maxHealth;
+        name.text = pokemonObject.namePokemon;
         //dodac level do pokemonObject :)
         // level.text = pokemonObject.text;
     }

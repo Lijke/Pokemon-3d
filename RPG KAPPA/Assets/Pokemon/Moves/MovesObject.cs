@@ -6,9 +6,7 @@ public enum MoveType
     Water,
     Normal,
     Fire,
-    Grass,
-    Fly,
-    Ghost
+    Grass
 }
 public abstract class MovesObject : ScriptableObject
 {

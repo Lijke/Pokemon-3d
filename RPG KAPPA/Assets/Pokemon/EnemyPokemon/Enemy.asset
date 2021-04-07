@@ -15,6 +15,7 @@ MonoBehaviour:
   prefab: {fileID: 5928149431082392748, guid: 13bd319ca4a79f44abe8dad624d6aa19, type: 3}
   prefab_pokemon: {fileID: 100104, guid: b3ac7d864261a9746b9ce84cdf06505d, type: 3}
   type: 1
-  namePokemon: Martyna
-  currentHealth: 20
-  maxHealth: 20
+  namePokemon: Enemy
+  currentHealth: 50
+  maxHealth: 100
+  moves: []

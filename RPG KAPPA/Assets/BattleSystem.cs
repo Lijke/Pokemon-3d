@@ -18,6 +18,11 @@ public class BattleSystem : MonoBehaviour
     public GameObject choseAcctionUi;
     public GameObject choseMovesUi;
     public List<GameObject> movesButton;
+
+    public GameObject pokemonInventoryCanvas;
+    public GameObject InventoryCanvas;
+    public DisplayPokemonInventory displayPokemonInventory;
+    public DisplayInventory displayItemInventory;
     private void Awake()
     {
        
@@ -26,7 +31,7 @@ public class BattleSystem : MonoBehaviour
     private void Start()
     {
         state = BattleState.START;
-        SetupBattle();
+        StartCoroutine(SetupBattle());
 
     }
     public IEnumerator SetupBattle()
@@ -54,33 +59,58 @@ public class BattleSystem : MonoBehaviour
         if(Acction=="Attack")
         {
             choseAcctionUi.SetActive(false);
-            PlayerTurnAttack();
+            PlayerTurnAttackShowMove();
         }
         else if (Acction=="Heal")
         {
             PlayerTurnHeal();
         }
     }
-    public void PlayerTurnAttack()
+    public void PlayerTurnAttackShowMove()
     {
         choseMovesUi.SetActive(true);
         var lenghtMoves = pokemonInventry.ContainerPokemon[0].item.moves.Count;
         for (int i = 0; i < lenghtMoves; i++)
         {
             var currentPokemonMoves = pokemonInventry.ContainerPokemon[0].item.moves[i];
+            movesButton[i].GetComponent<MovesButton>().move = currentPokemonMoves;
             movesButton[i].GetComponentInChildren<Text>().text = currentPokemonMoves.moveName;
         }
         for (int i = lenghtMoves; i < 4; i++)
         {
             movesButton[i].SetActive(false);
         }
+    }
+    public void PlayerTurnAttack(int damageMove, string nameMove, MoveType moveType)
+    {
+        var playerType = moveType;
+        var enemyType = pokemonInventry.ContainerPokemon[1].item.type;
+        float[][] chart =
+                {//                      wat  nor fire  grass
+                   /*wat*/ new float[] { 2f, 2f, 2f, 2f },
+                   /*nor*/new float[] { 2f, 1f, 2f, 4f },
+                   /*fire*/new float[] { 2f, 4f, 1, 1f },
+                   /*grass*/new float[] { 2f, 1f, 4f, 1f }
+                };
+        int row = (int)playerType;
+        int col = (int)enemyType;
+        int effectiveness = (int)chart[row][col];
+        int damageDeal = damageMove * effectiveness;
+        var enemyPokemon = pokemonInventry.ContainerPokemon[1].item;
+        enemyHud.SetPlayerHud(enemyPokemon);
+        enemyPokemon.currentHealth -= damageDeal;
 
-        
 
     }
     public void PlayerTurnHeal()
     {
-
+        pokemonInventoryCanvas.SetActive(true);
+        displayPokemonInventory.CreateDisplayInFight();
+    }
+    public void ChoseItemToHealPokemon()
+    {
+        InventoryCanvas.SetActive(true);
+        displayItemInventory.CreateDisplayInFight();
     }
     public void PlayerTurnRunAway()
     {

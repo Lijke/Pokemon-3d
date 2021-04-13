@@ -17,7 +17,7 @@ public class DisplayInventory : MonoBehaviour
 
     void Start()
     {
-        //CreateDisplay();
+        CreateDisplay();
     }
     void Update()
     {
@@ -58,11 +58,8 @@ public class DisplayInventory : MonoBehaviour
     {
         for (int i = 0; i < inventory.Container.Count; i++)
         {
-            var obj = Instantiate(inventory.Container[i].item.prefab, Vector3.zero, Quaternion.identity, transform);
+            var obj = inventory.Container[i].item.prefab;
             obj.GetComponentInChildren<ItemButton>().AssignPotionToButton(i);
-            obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
-            obj.GetComponentInChildren<TextMeshProUGUI>().text = inventory.Container[i].amount.ToString("n0");
-            itemsDisplay.Add(inventory.Container[i], obj);
         }
     }
 }

@@ -18,6 +18,6 @@ MonoBehaviour:
   type: 1
   namePokemon: Normal
   currentHealth: 20
-  maxHealth: 5
+  maxHealth: 20
   moves:
   - {fileID: 11400000, guid: ed38ab9371a9a0b4c96045bacb5e09d3, type: 2}

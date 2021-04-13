@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 655589522bc5f3d42943edea690f8848, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  potionObject: {fileID: 0}
+  potionObject: {fileID: 11400000, guid: 04fb00fbce6f8d64daa6748cf0f52d9d, type: 2}
   inventoryObject: {fileID: 11400000, guid: ac71f81f918bf6a4e8b56fd4b8c2c3d2, type: 2}
 --- !u!1 &3812968516128771967
 GameObject:
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: 4
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -302,7 +302,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -190, y: 318}
+  m_AnchoredPosition: {x: -75, y: 219}
   m_SizeDelta: {x: 98.94556, y: 92.76163}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8325794972835176499

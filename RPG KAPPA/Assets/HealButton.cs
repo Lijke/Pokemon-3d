@@ -17,9 +17,11 @@ public class HealButton : MonoBehaviour
     public void AssignPokemonToButton(int i)
     {
         pokemon = battleSystem.pokemonInventry.ContainerPokemon[i].item;
+
     }
     public void ChoseItemToHealPokemon()
     {
+        battleSystem.pokemonToheal = pokemon;
         battleSystem.ChoseItemToHealPokemon();
     }
 }

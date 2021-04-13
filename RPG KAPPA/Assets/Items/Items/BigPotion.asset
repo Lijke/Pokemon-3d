@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d5d83785aeb7e42b5ebd7b46aa8eee, type: 3}
   m_Name: BigPotion
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 8313903339994438242, guid: 3f6a6bc160cc4334a9fa5f90532103f0, type: 3}
   type: 0
   description: 
-  restoreHealthValue: 0
+  restoreHealthValue: 20

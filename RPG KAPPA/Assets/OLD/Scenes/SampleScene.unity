@@ -747,7 +747,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1156,8 +1156,8 @@ RectTransform:
   m_Father: {fileID: 1723817401}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.802, y: 0}
-  m_AnchorMax: {x: 0.802, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1722,6 +1722,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccfc62f74f7d1d040a1e5c815e50b57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleSystem: {fileID: 0}
+  pokemon: {fileID: 0}
 --- !u!114 &720579434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1764,7 +1766,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 720579435}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 720579433}
+        m_MethodName: AttackButtonChosen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &720579435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2028,7 +2041,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2148,7 +2161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &969784075
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2397,7 +2410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSensetivity: 100
   playerBody: {fileID: 1558463048}
-  canLookAround: 1
+  canLookAround: 0
 --- !u!1 &1024949148
 GameObject:
   m_ObjectHideFlags: 0
@@ -2694,7 +2707,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1152460237
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4398,6 +4411,10 @@ MonoBehaviour:
   - {fileID: 1361149659}
   - {fileID: 1344429883}
   - {fileID: 623976053}
+  pokemonInventoryCanvas: {fileID: 1814825661}
+  InventoryCanvas: {fileID: 969784074}
+  displayPokemonInventory: {fileID: 1814825665}
+  displayItemInventory: {fileID: 969784076}
 --- !u!4 &1788339597
 Transform:
   m_ObjectHideFlags: 0
@@ -4561,8 +4578,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pokemonInventry: {fileID: 11400000, guid: f528cdd8a2dc0614f85c1eaff0207038, type: 2}
+  pokemonInventoryInFight: {fileID: 0}
   X_START: 0
-  Y_START: 337
+  Y_START: 216
   Y_SPACE_BETWEEN_ITEMS: 120
   X_SPACE_BETWEEN_ITEM: 0
   NUMBER_OF_COLUMN: 1
@@ -5319,7 +5337,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.802, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

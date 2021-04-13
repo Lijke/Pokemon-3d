@@ -23,6 +23,9 @@ public class BattleSystem : MonoBehaviour
     public GameObject InventoryCanvas;
     public DisplayPokemonInventory displayPokemonInventory;
     public DisplayInventory displayItemInventory;
+
+    public PokemonObject pokemonToheal;
+    public InventoryObject itemToHeal;
     private void Awake()
     {
        
@@ -55,7 +58,6 @@ public class BattleSystem : MonoBehaviour
     }
     public void PlayerTurnChoseAcction(string Acction)
     {
-        Debug.Log(Acction);
         if(Acction=="Attack")
         {
             choseAcctionUi.SetActive(false);
@@ -111,9 +113,33 @@ public class BattleSystem : MonoBehaviour
     {
         InventoryCanvas.SetActive(true);
         displayItemInventory.CreateDisplayInFight();
+        foreach (Transform child in InventoryCanvas.transform)
+        {
+            child.GetComponentInChildren<Button>().interactable = false;
+        }
+    }
+    public void HealPokemon(int valueToHeal)
+    {
+        pokemonToheal.currentHealth += valueToHeal;
+        if(pokemonToheal.currentHealth > pokemonToheal.maxHealth)
+        {
+            pokemonToheal.currentHealth = pokemonToheal.maxHealth;
+        }
+        playerHud.SetPlayerHud(pokemonToheal);
+        pokemonInventoryCanvas.SetActive(false);
+        InventoryCanvas.SetActive(false);
+        foreach (Transform child in pokemonInventoryCanvas.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        foreach (Transform child in InventoryCanvas.transform)
+        {
+            child.GetComponentInChildren<Button>().interactable = false;
+        }
+
     }
     public void PlayerTurnRunAway()
     {
-
+        //zrobić player turn :)
     }
 }

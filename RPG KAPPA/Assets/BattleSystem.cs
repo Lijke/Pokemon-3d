@@ -6,6 +6,8 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleSystem : MonoBehaviour
 {
     BattleState state;
+    public PokemonObject enemyPokemonFight;
+    public PokemonObject playerPokemonFight;
     public Transform playerPokemonTransform;
     public Transform enemyPokemonTransform;
 
@@ -26,30 +28,42 @@ public class BattleSystem : MonoBehaviour
 
     public PokemonObject pokemonToheal;
     public InventoryObject itemToHeal;
+    public GameObject battleCanvas;
+    public bool fighting;
+    private int bestMove;
+    public int effectiveness;
     private void Awake()
     {
        
     }
 
-    private void Start()
+    private void Update()
     {
-        state = BattleState.START;
-        StartCoroutine(SetupBattle());
+        if(fighting)
+        {
+            fighting = false;
+            state = BattleState.START;
+            StartCoroutine(SetupBattle());
+        }
+       
 
     }
     public IEnumerator SetupBattle()
     {
+        battleCanvas.SetActive(true);
         //PLAYERSPAWN OBJECT + UPDATEUI
         var playerPokemon = Instantiate(pokemonInventry.ContainerPokemon[0].item.prefab_pokemon, Vector3.zero, Quaternion.identity, transform);
+        playerPokemonFight = pokemonInventry.ContainerPokemon[0].item;
         playerPokemon.GetComponent<Transform>().position = playerPokemonTransform.position;
         playerHud.SetPlayerHud(pokemonInventry.ContainerPokemon[0].item);
         //ENEMY SPAWN OBJECT + UPDATEUI
-        var enemyPokemon = Instantiate(pokemonInventry.ContainerPokemon[1].item.prefab_pokemon, Vector3.zero, Quaternion.identity, transform);
+        var enemyPokemon = Instantiate(enemyPokemonFight.prefab_pokemon, Vector3.zero, Quaternion.identity, transform);
         enemyPokemon.GetComponent<Transform>().position = enemyPokemonTransform.position;
-        enemyHud.SetPlayerHud(pokemonInventry.ContainerPokemon[1].item);
+        enemyHud.SetPlayerHud(enemyPokemonFight);
         yield return new WaitForSeconds(0f);
         PlayerTurn();
     }
+    #region PlayerTurn
     public void PlayerTurn()
     {
         state = BattleState.PLAYERTURN;
@@ -101,7 +115,10 @@ public class BattleSystem : MonoBehaviour
         var enemyPokemon = pokemonInventry.ContainerPokemon[1].item;
         enemyHud.SetPlayerHud(enemyPokemon);
         enemyPokemon.currentHealth -= damageDeal;
-
+        choseMovesUi.SetActive(false);
+        choseAcctionUi.SetActive(true);
+        //enemyTurn
+        EnemyChoseMove();
 
     }
     public void PlayerTurnHeal()
@@ -136,10 +153,47 @@ public class BattleSystem : MonoBehaviour
         {
             child.GetComponentInChildren<Button>().interactable = false;
         }
+        //enemyTurn
+        EnemyChoseMove();
 
     }
     public void PlayerTurnRunAway()
     {
         //zrobić player turn :)
     }
+    #endregion
+
+    #region EnemyTurn
+    public void EnemyChoseMove()
+    {
+        for (int i = 0; i < enemyPokemonFight.moves.Count; i++)
+        {
+            var enemyMoveType = enemyPokemonFight.moves[i].moveType;
+            var playerPokemonType = playerPokemonFight.type;
+            float[][] chart =
+                {//                      wat  nor fire  grass
+                   /*wat*/ new float[] { 2f, 2f, 2f, 2f },
+                   /*nor*/new float[] { 2f, 1f, 2f, 4f },
+                   /*fire*/new float[] { 2f, 4f, 1, 1f },
+                   /*grass*/new float[] { 2f, 1f, 4f, 1f }
+                };
+            int row = (int)playerPokemonType;
+            int col = (int)enemyMoveType;
+            effectiveness = (int)chart[row][col];
+            if(effectiveness==4)
+            {
+                bestMove = i;  
+            }
+        }
+        StartCoroutine(EnemyAttack(enemyPokemonFight.moves[bestMove].baseDamage,bestMove));
+    }
+    public IEnumerator EnemyAttack(int baseDamage,int moves)
+    {
+        Debug.Log(baseDamage + "base");
+        playerPokemonFight.currentHealth -= baseDamage * effectiveness;
+        Debug.Log(baseDamage * effectiveness);
+        yield return new WaitForSeconds(1f);
+    }
+         
+    #endregion
 }

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d749b35012e2a1446ac31443866ab26c, type: 3}
-  m_Name: Tackle
+  m_Name: New Normal Move 1
   m_EditorClassIdentifier: 
-  moveName: Tackle
-  currentPowerPoint: 20
-  maxPowerPoint: 20
-  baseDamage: 5
-  moveType: 0
+  moveName: Water
+  currentPowerPoint: 1
+  maxPowerPoint: 1
+  baseDamage: 1
+  moveType: 1

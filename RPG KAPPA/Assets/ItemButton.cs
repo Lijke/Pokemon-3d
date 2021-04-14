@@ -20,7 +20,6 @@ public class ItemButton : MonoBehaviour
     public void AssignPotionToButton(int i)
     {
         index = i;
-        Debug.Log(i);
         potionObject = inventoryObject.Container[i].item;
     }
     public void HealPokemon()

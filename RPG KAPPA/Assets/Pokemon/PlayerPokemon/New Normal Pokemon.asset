@@ -15,9 +15,9 @@ MonoBehaviour:
   prefab: {fileID: 5928149431082392748, guid: 13bd319ca4a79f44abe8dad624d6aa19, type: 3}
   prefab_pokemon: {fileID: 919132149155446097, guid: 248c282fcb69df342bdb6933d0392e31,
     type: 3}
-  type: 1
+  type: 2
   namePokemon: Normal
-  currentHealth: 20
+  currentHealth: 16
   maxHealth: 20
   moves:
   - {fileID: 11400000, guid: ed38ab9371a9a0b4c96045bacb5e09d3, type: 2}

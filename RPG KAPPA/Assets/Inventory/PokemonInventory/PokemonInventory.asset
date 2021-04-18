@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PokemonInventory
   ContainerPokemon:
   - item: {fileID: 11400000, guid: c7410673241bf6541adfe809fcdc2d2f, type: 2}
-  - item: {fileID: 11400000, guid: 659d36665d4a0f34d9ce9634e45d625a, type: 2}
+  - item: {fileID: 11400000, guid: 0eec37c73c54c1e478be72157010f791, type: 2}

@@ -7,7 +7,6 @@ using TMPro;
 public class DisplayPokemonInventory : MonoBehaviour
 {
     public PokemonInventory pokemonInventry;
-    public PokemonInventory pokemonInventoryInFight;
     public int X_START;
     public int Y_START;
     public int Y_SPACE_BETWEEN_ITEMS;
@@ -16,13 +15,10 @@ public class DisplayPokemonInventory : MonoBehaviour
     Dictionary<InventoryPokemonSlot, GameObject> itemsDisplay = new Dictionary<InventoryPokemonSlot, GameObject>();
     void Start()
     {
-        //CreateDisplay();
+       // CreateDisplay();
         
     }
-    void Update()
-    {
-        //UpdateDisplay();
-    }
+
     public void CreateDisplay()
     {
         for (int i = 0; i < pokemonInventry.ContainerPokemon.Count; i++)
@@ -31,7 +27,7 @@ public class DisplayPokemonInventory : MonoBehaviour
             Destroy(obj.GetComponentInChildren<Button>().gameObject);
             obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
             obj.GetComponentInChildren<TextMeshProUGUI>().text = pokemonInventry.ContainerPokemon[i].item.namePokemon;
-            obj.GetComponentInChildren<Slider>().value = pokemonInventry.ContainerPokemon[i].item.currentHealth / pokemonInventry.ContainerPokemon[i].item.maxHealth;
+            obj.GetComponentInChildren<Slider>().value = (float)pokemonInventry.ContainerPokemon[i].item.currentHealth /(float) pokemonInventry.ContainerPokemon[i].item.maxHealth;
         }
     }
     public Vector3 GetPosition(int i)
@@ -43,10 +39,25 @@ public class DisplayPokemonInventory : MonoBehaviour
         for (int i = 0; i < pokemonInventry.ContainerPokemon.Count; i++)
         {
             var obj = Instantiate(pokemonInventry.ContainerPokemon[i].item.prefab, Vector3.zero, Quaternion.identity, transform);
+            obj.GetComponentInChildren<HealButton>().ChangeState("Heal");
             obj.GetComponentInChildren<HealButton>().AssignPokemonToButton(i);
             obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
             obj.GetComponentInChildren<TextMeshProUGUI>().text = pokemonInventry.ContainerPokemon[i].item.namePokemon;
-            obj.GetComponentInChildren<Slider>().value = pokemonInventry.ContainerPokemon[i].item.currentHealth / pokemonInventry.ContainerPokemon[i].item.maxHealth;
+            obj.GetComponentInChildren<Slider>().value = (float)pokemonInventry.ContainerPokemon[i].item.currentHealth / (float)pokemonInventry.ContainerPokemon[i].item.maxHealth;
         }
     }
+    public void CreateDisplayInFightWhenChangePokemon()
+    {
+        for (int i = 0; i < pokemonInventry.ContainerPokemon.Count; i++)
+        {
+            var obj = Instantiate(pokemonInventry.ContainerPokemon[i].item.prefab, Vector3.zero, Quaternion.identity, transform);
+            obj.GetComponentInChildren<HealButton>().ChangeState("Switch");
+            obj.GetComponentInChildren<HealButton>().button.GetComponentInChildren<Text>().text = "FIght";
+            obj.GetComponentInChildren<HealButton>().AssignPokemonToButton(i);
+            obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
+            obj.GetComponentInChildren<TextMeshProUGUI>().text = pokemonInventry.ContainerPokemon[i].item.namePokemon;
+            obj.GetComponentInChildren<Slider>().value = (float)pokemonInventry.ContainerPokemon[i].item.currentHealth / (float)pokemonInventry.ContainerPokemon[i].item.maxHealth;
+        }
+    }
+
 }

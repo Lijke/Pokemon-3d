@@ -131,6 +131,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 4707862219452120356}
+        m_MethodName: ButtonWhenSwitchPokemon
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4707862219452120356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleSystem: {fileID: 0}
   pokemon: {fileID: 0}
+  button: {fileID: 8646063626815523662}
 --- !u!1 &5928149430270993579
 GameObject:
   m_ObjectHideFlags: 0

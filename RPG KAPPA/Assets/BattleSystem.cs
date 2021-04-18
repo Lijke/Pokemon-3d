@@ -2,12 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
+public enum BattleState 
+{ START, 
+  PLAYERTURN,
+   PLAYERTURNCHOSEMOVE,
+    ENEMYTURN,
+    WON, 
+    LOST, 
+    HEAL 
+}
 public class BattleSystem : MonoBehaviour
 {
-    BattleState state;
+   [SerializeField] BattleState state;
     public PokemonObject enemyPokemonFight;
     public PokemonObject playerPokemonFight;
+    private GameObject playerPokemon;
+    private GameObject enemyPokemon;
     public Transform playerPokemonTransform;
     public Transform enemyPokemonTransform;
 
@@ -32,6 +42,8 @@ public class BattleSystem : MonoBehaviour
     public bool fighting;
     private int bestMove;
     public int effectiveness;
+
+    public Text dialogueText;
     private void Awake()
     {
        
@@ -52,7 +64,7 @@ public class BattleSystem : MonoBehaviour
     {
         battleCanvas.SetActive(true);
         //PLAYERSPAWN OBJECT + UPDATEUI
-        var playerPokemon = Instantiate(pokemonInventry.ContainerPokemon[0].item.prefab_pokemon, Vector3.zero, Quaternion.identity, transform);
+        playerPokemon = Instantiate(pokemonInventry.ContainerPokemon[0].item.prefab_pokemon, Vector3.zero, Quaternion.identity, transform);
         playerPokemonFight = pokemonInventry.ContainerPokemon[0].item;
         playerPokemon.GetComponent<Transform>().position = playerPokemonTransform.position;
         playerHud.SetPlayerHud(pokemonInventry.ContainerPokemon[0].item);
@@ -60,27 +72,36 @@ public class BattleSystem : MonoBehaviour
         var enemyPokemon = Instantiate(enemyPokemonFight.prefab_pokemon, Vector3.zero, Quaternion.identity, transform);
         enemyPokemon.GetComponent<Transform>().position = enemyPokemonTransform.position;
         enemyHud.SetPlayerHud(enemyPokemonFight);
-        yield return new WaitForSeconds(0f);
+        dialogueText.text = enemyPokemonFight.namePokemon + " is attacking you!";
+        yield return new WaitForSeconds(1f);
+        state = BattleState.PLAYERTURN;
         PlayerTurn();
     }
     #region PlayerTurn
     public void PlayerTurn()
     {
-        state = BattleState.PLAYERTURN;
+        dialogueText.text = "Chose acction";
+        state = BattleState.PLAYERTURNCHOSEMOVE;
         choseAcctionUi.SetActive(true);
 
     }
     public void PlayerTurnChoseAcction(string Acction)
     {
-        if(Acction=="Attack")
+        if(state==BattleState.PLAYERTURNCHOSEMOVE)
         {
-            choseAcctionUi.SetActive(false);
-            PlayerTurnAttackShowMove();
+            if (Acction == "Attack")
+            {
+                Acction = "";
+                choseAcctionUi.SetActive(false);
+                PlayerTurnAttackShowMove();
+            }
+            else if (Acction == "Heal")
+            {
+                Acction = "";
+                PlayerTurnHeal();
+            }
         }
-        else if (Acction=="Heal")
-        {
-            PlayerTurnHeal();
-        }
+
     }
     public void PlayerTurnAttackShowMove()
     {
@@ -100,7 +121,7 @@ public class BattleSystem : MonoBehaviour
     public void PlayerTurnAttack(int damageMove, string nameMove, MoveType moveType)
     {
         var playerType = moveType;
-        var enemyType = pokemonInventry.ContainerPokemon[1].item.type;
+        var enemyType = enemyPokemonFight.type;
         float[][] chart =
                 {//                      wat  nor fire  grass
                    /*wat*/ new float[] { 2f, 2f, 2f, 2f },
@@ -112,37 +133,52 @@ public class BattleSystem : MonoBehaviour
         int col = (int)enemyType;
         int effectiveness = (int)chart[row][col];
         int damageDeal = damageMove * effectiveness;
-        var enemyPokemon = pokemonInventry.ContainerPokemon[1].item;
-        enemyHud.SetPlayerHud(enemyPokemon);
-        enemyPokemon.currentHealth -= damageDeal;
-        choseMovesUi.SetActive(false);
-        choseAcctionUi.SetActive(true);
-        //enemyTurn
-        EnemyChoseMove();
+        StartCoroutine(enemyHud.SetPlayerHudWhenHit(enemyPokemonFight, enemyPokemonFight.currentHealth, damageDeal));
+        state = BattleState.ENEMYTURN;
+        enemyPokemonFight.currentHealth -= damageDeal;
+        bool isDead=CheckDamage(enemyPokemonFight);
+        if(isDead)
+        {
+            EndBattle();
+        }
+        else
+        {
+            choseMovesUi.SetActive(false);
+            choseAcctionUi.SetActive(true);
+            dialogueText.text = "Enemy Turn";
+            StartCoroutine(EnemyChoseMove());
+        }
+     
 
     }
     public void PlayerTurnHeal()
     {
         pokemonInventoryCanvas.SetActive(true);
+        dialogueText.text = "Chose pokemon to heal";
         displayPokemonInventory.CreateDisplayInFight();
     }
     public void ChoseItemToHealPokemon()
     {
+        dialogueText.text = "Chose item to heal";
         InventoryCanvas.SetActive(true);
         displayItemInventory.CreateDisplayInFight();
         foreach (Transform child in InventoryCanvas.transform)
         {
-            child.GetComponentInChildren<Button>().interactable = false;
+            child.GetComponentInChildren<Button>().interactable = true;
         }
     }
     public void HealPokemon(int valueToHeal)
     {
+        Debug.Log("OK");
         pokemonToheal.currentHealth += valueToHeal;
         if(pokemonToheal.currentHealth > pokemonToheal.maxHealth)
         {
             pokemonToheal.currentHealth = pokemonToheal.maxHealth;
         }
-        playerHud.SetPlayerHud(pokemonToheal);
+        if(pokemonToheal.namePokemon==playerPokemonFight.namePokemon)
+        {
+            playerHud.SetPlayerHud(pokemonToheal);
+        }
         pokemonInventoryCanvas.SetActive(false);
         InventoryCanvas.SetActive(false);
         foreach (Transform child in pokemonInventoryCanvas.transform)
@@ -153,8 +189,8 @@ public class BattleSystem : MonoBehaviour
         {
             child.GetComponentInChildren<Button>().interactable = false;
         }
-        //enemyTurn
-        EnemyChoseMove();
+        state = BattleState.ENEMYTURN;
+        StartCoroutine(EnemyChoseMove());
 
     }
     public void PlayerTurnRunAway()
@@ -164,36 +200,108 @@ public class BattleSystem : MonoBehaviour
     #endregion
 
     #region EnemyTurn
-    public void EnemyChoseMove()
+    public IEnumerator EnemyChoseMove()
     {
-        for (int i = 0; i < enemyPokemonFight.moves.Count; i++)
+        if(state==BattleState.ENEMYTURN)
         {
-            var enemyMoveType = enemyPokemonFight.moves[i].moveType;
-            var playerPokemonType = playerPokemonFight.type;
-            float[][] chart =
-                {//                      wat  nor fire  grass
+            Debug.Log("odpala1");
+            yield return new WaitForSeconds(1f);
+            for (int i = 0; i < enemyPokemonFight.moves.Count; i++)
+            {
+                var enemyMoveType = enemyPokemonFight.moves[i].moveType;
+                var playerPokemonType = playerPokemonFight.type;
+                float[][] chart =
+                    {//                      wat  nor fire  grass
                    /*wat*/ new float[] { 2f, 2f, 2f, 2f },
                    /*nor*/new float[] { 2f, 1f, 2f, 4f },
                    /*fire*/new float[] { 2f, 4f, 1, 1f },
                    /*grass*/new float[] { 2f, 1f, 4f, 1f }
                 };
-            int row = (int)playerPokemonType;
-            int col = (int)enemyMoveType;
-            effectiveness = (int)chart[row][col];
-            if(effectiveness==4)
-            {
-                bestMove = i;  
+                int row = (int)playerPokemonType;
+                int col = (int)enemyMoveType;
+                effectiveness = (int)chart[row][col];
+                if (effectiveness == 4)
+                {
+                    bestMove = i;
+                }
             }
+            StartCoroutine(EnemyAttack(enemyPokemonFight.moves[bestMove].baseDamage, bestMove));
         }
-        StartCoroutine(EnemyAttack(enemyPokemonFight.moves[bestMove].baseDamage,bestMove));
+
     }
     public IEnumerator EnemyAttack(int baseDamage,int moves)
     {
-        Debug.Log(baseDamage + "base");
-        playerPokemonFight.currentHealth -= baseDamage * effectiveness;
-        Debug.Log(baseDamage * effectiveness);
+        Debug.Log("odpala2");
+        dialogueText.text = "Enemy pokemon attack!";
         yield return new WaitForSeconds(1f);
+        var damage= baseDamage * effectiveness;
+        StartCoroutine(playerHud.SetPlayerHudWhenHit(playerPokemonFight, playerPokemonFight.currentHealth, damage));
+        playerPokemonFight.currentHealth -= damage;
+        bool isDead = CheckDamage(playerPokemonFight);
+        if(isDead)
+        {
+            ShowPlayerPokemon();
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f);
+            state = BattleState.PLAYERTURN;
+            PlayerTurn();
+
+        }
+        
     }
-         
+
     #endregion
+    #region EndBattle
+    public void EndBattle()
+    {
+        dialogueText.text = "Congrats you win battle!";
+        battleCanvas.SetActive(false);
+        movesButton.Clear();
+    }
+    #endregion
+    public void ShowPlayerPokemon()
+    {
+        bool isAllPokemonDead = false;
+        for (int i = 0; i < pokemonInventry.ContainerPokemon.Count; i++)
+        {
+            if(pokemonInventry.ContainerPokemon[i].item.currentHealth>0)
+            {
+                isAllPokemonDead = true;
+                break;
+            }
+            else
+            {
+                isAllPokemonDead = false;
+            }
+        }
+        if(isAllPokemonDead)
+        {
+            //ENDBATTLE
+        }
+        dialogueText.text = "Chose pokemon to fight";
+        pokemonInventoryCanvas.SetActive(true);
+        displayPokemonInventory.CreateDisplayInFightWhenChangePokemon();
+
+    }
+    public void ClearAllBeforeRespawnOtherPokemon(int pokemonIndexInContainer)
+    {
+        Destroy(playerPokemon);
+        playerPokemon = Instantiate(pokemonInventry.ContainerPokemon[pokemonIndexInContainer].item.prefab_pokemon, Vector3.zero, Quaternion.identity, transform);
+        playerPokemonFight = pokemonInventry.ContainerPokemon[pokemonIndexInContainer].item;
+        playerPokemon.GetComponent<Transform>().position = playerPokemonTransform.position;
+        playerHud.SetPlayerHud(pokemonInventry.ContainerPokemon[pokemonIndexInContainer].item);
+        state = BattleState.PLAYERTURN;
+        Debug.Log("CLEAR");
+        PlayerTurn();
+
+    }
+    public bool CheckDamage(PokemonObject pokemonObject)
+    {
+        if (pokemonObject.currentHealth < 0)
+            return true;
+        else
+            return false;
+    }
 }

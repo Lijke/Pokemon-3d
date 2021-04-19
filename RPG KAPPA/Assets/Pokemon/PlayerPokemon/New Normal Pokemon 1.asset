@@ -16,7 +16,7 @@ MonoBehaviour:
   prefab_pokemon: {fileID: 100000, guid: abe2d5d82aa6b0a44a7170f0f5d9b0f3, type: 3}
   type: 1
   namePokemon: Second
-  currentHealth: 85
+  currentHealth: 100
   maxHealth: 100
   moves:
   - {fileID: 11400000, guid: ec01c3a18c6ad8241b5b5fd2781d469d, type: 2}

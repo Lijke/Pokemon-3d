@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05d5d83785aeb7e42b5ebd7b46aa8eee, type: 3}
-  m_Name: BigPotion
+  m_Script: {fileID: 11500000, guid: 1c09aff649bfd9349a9794ea2dc2275f, type: 3}
+  m_Name: Gold
   m_EditorClassIdentifier: 
-  prefab: {fileID: 8313903339994438242, guid: 4f2668d4e76041041b9eaf85557df390, type: 3}
-  type: 0
+  prefab: {fileID: 8313903339994438242, guid: 3f6a6bc160cc4334a9fa5f90532103f0, type: 3}
+  type: 3
   description: 
-  restoreHealthValue: 20
+  restoreHealthValue: 0

@@ -31,9 +31,12 @@ public class HealButton : MonoBehaviour
     }
     public void ChoseItemToHealPokemon()
     {
+        if(state==ObjectState.Heal)
+        {
             battleSystem.pokemonToheal = pokemon;
-            battleSystem.ChoseItemToHealPokemon();
-      
+
+            StartCoroutine(battleSystem.ChoseItemToHealPokemon());
+        }
     }
     public void ButtonWhenSwitchPokemon()
     {

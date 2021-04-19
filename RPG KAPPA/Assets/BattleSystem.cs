@@ -139,7 +139,7 @@ public class BattleSystem : MonoBehaviour
         bool isDead=CheckDamage(enemyPokemonFight);
         if(isDead)
         {
-            EndBattle();
+            EndBattle(false);
         }
         else
         {
@@ -157,15 +157,20 @@ public class BattleSystem : MonoBehaviour
         dialogueText.text = "Chose pokemon to heal";
         displayPokemonInventory.CreateDisplayInFight();
     }
-    public void ChoseItemToHealPokemon()
+    public IEnumerator ChoseItemToHealPokemon()
     {
         dialogueText.text = "Chose item to heal";
         InventoryCanvas.SetActive(true);
         displayItemInventory.CreateDisplayInFight();
+        yield return new WaitForSeconds(1);
         foreach (Transform child in InventoryCanvas.transform)
         {
-            child.GetComponentInChildren<Button>().interactable = true;
+            if (child.GetComponentInChildren<Button>() != null)
+                child.GetComponentInChildren<Button>().interactable = true;
+           
         }
+
+        
     }
     public void HealPokemon(int valueToHeal)
     {
@@ -187,6 +192,7 @@ public class BattleSystem : MonoBehaviour
         }
         foreach (Transform child in InventoryCanvas.transform)
         {
+            if(child.GetComponentInChildren<Button>() != null)
             child.GetComponentInChildren<Button>().interactable = false;
         }
         state = BattleState.ENEMYTURN;
@@ -195,7 +201,7 @@ public class BattleSystem : MonoBehaviour
     }
     public void PlayerTurnRunAway()
     {
-        //zrobić player turn :)
+        //zrobić run away;
     }
     #endregion
 
@@ -204,7 +210,6 @@ public class BattleSystem : MonoBehaviour
     {
         if(state==BattleState.ENEMYTURN)
         {
-            Debug.Log("odpala1");
             yield return new WaitForSeconds(1f);
             for (int i = 0; i < enemyPokemonFight.moves.Count; i++)
             {
@@ -231,7 +236,6 @@ public class BattleSystem : MonoBehaviour
     }
     public IEnumerator EnemyAttack(int baseDamage,int moves)
     {
-        Debug.Log("odpala2");
         dialogueText.text = "Enemy pokemon attack!";
         yield return new WaitForSeconds(1f);
         var damage= baseDamage * effectiveness;
@@ -254,35 +258,50 @@ public class BattleSystem : MonoBehaviour
 
     #endregion
     #region EndBattle
-    public void EndBattle()
+    public void EndBattle(bool isWin)
     {
-        dialogueText.text = "Congrats you win battle!";
-        battleCanvas.SetActive(false);
-        movesButton.Clear();
+        if(isWin)
+        {
+            dialogueText.text = "Congrats you win battle!";
+            battleCanvas.SetActive(false);
+            movesButton.Clear();
+        }
+        else
+        {
+            dialogueText.text = "You lose battle!";
+            battleCanvas.SetActive(false);
+            movesButton.Clear();
+        }
+        
     }
     #endregion
     public void ShowPlayerPokemon()
     {
+        Debug.Log("HEre");
         bool isAllPokemonDead = false;
         for (int i = 0; i < pokemonInventry.ContainerPokemon.Count; i++)
         {
             if(pokemonInventry.ContainerPokemon[i].item.currentHealth>0)
             {
-                isAllPokemonDead = true;
+                isAllPokemonDead = false;
                 break;
             }
             else
             {
-                isAllPokemonDead = false;
+                isAllPokemonDead = true;
             }
         }
         if(isAllPokemonDead)
         {
-            //ENDBATTLE
+            EndBattle(true);
         }
-        dialogueText.text = "Chose pokemon to fight";
-        pokemonInventoryCanvas.SetActive(true);
-        displayPokemonInventory.CreateDisplayInFightWhenChangePokemon();
+        else
+        {
+            dialogueText.text = "Chose pokemon to fight";
+            pokemonInventoryCanvas.SetActive(true);
+            displayPokemonInventory.CreateDisplayInFightWhenChangePokemon();
+        }
+        
 
     }
     public void ClearAllBeforeRespawnOtherPokemon(int pokemonIndexInContainer)

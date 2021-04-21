@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public enum ObjectState
 {
   Heal,
-  ChangePokemon
+  ChangePokemon,
+  Switch
 }
 public class HealButton : MonoBehaviour
 {
@@ -42,7 +43,6 @@ public class HealButton : MonoBehaviour
     {
         if(state==ObjectState.ChangePokemon)
         {
-            Debug.Log("OPALA SIE !");
             button.GetComponentInChildren<Text>().text = "Fight!";
             if (pokemon.currentHealth <= 0)
             {
@@ -57,6 +57,23 @@ public class HealButton : MonoBehaviour
         }
         
     }
+        public void SwitchPokemon()
+        {
+            if(state==ObjectState.Switch)
+            {
+                button.GetComponentInChildren<Text>().text = "Switch!";
+                if(pokemon.currentHealth<0)
+                {
+                    Debug.Log("Nie mozesz uzyc tego pokemona");
+                }
+                else
+                {
+                    battleSystem.playerPokemonFight = pokemonSwitch;
+                    battleSystem.ClearAllBeforeRespawnOtherPokemon(IndexOfPokemonInContainer);
+                    battleSystem.pokemonInventoryCanvas.SetActive(false);
+                }
+            }
+        }
     public void ChangeState(string Acction)
     {
         if (Acction == "Heal")

@@ -52,7 +52,7 @@ public class DisplayPokemonInventory : MonoBehaviour
         {
             var obj = Instantiate(pokemonInventry.ContainerPokemon[i].item.prefab, Vector3.zero, Quaternion.identity, transform);
             obj.GetComponentInChildren<HealButton>().ChangeState("Switch");
-            obj.GetComponentInChildren<HealButton>().button.GetComponentInChildren<Text>().text = "FIght";
+            obj.GetComponentInChildren<HealButton>().button.GetComponentInChildren<Text>().text = "Switch Pokemon";
             obj.GetComponentInChildren<HealButton>().AssignPokemonToButton(i);
             obj.GetComponent<RectTransform>().localPosition = GetPosition(i);
             obj.GetComponentInChildren<TextMeshProUGUI>().text = pokemonInventry.ContainerPokemon[i].item.namePokemon;

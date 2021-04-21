@@ -100,6 +100,11 @@ public class BattleSystem : MonoBehaviour
                 Acction = "";
                 PlayerTurnHeal();
             }
+            else if (Acction== "SwitchPokemon")
+            {
+                Acction = "";
+                ChangePokemonInBattle();
+            }
         }
 
     }
@@ -192,7 +197,7 @@ public class BattleSystem : MonoBehaviour
         }
         foreach (Transform child in InventoryCanvas.transform)
         {
-            if(child.GetComponentInChildren<Button>() != null)
+            if(child.GetComponentInChildren<Button>() != null)  
             child.GetComponentInChildren<Button>().interactable = false;
         }
         state = BattleState.ENEMYTURN;
@@ -202,6 +207,15 @@ public class BattleSystem : MonoBehaviour
     public void PlayerTurnRunAway()
     {
         //zrobić run away;
+    }
+
+    public void ChangePokemonInBattle()
+    {
+        battleCanvas.SetActive(true);
+        displayPokemonInventory.CreateDisplayInFightWhenChangePokemon();
+        playerHud.SetPlayerHud(playerPokemonFight);
+        EnemyChoseMove();
+        
     }
     #endregion
 
@@ -263,21 +277,20 @@ public class BattleSystem : MonoBehaviour
         if(isWin)
         {
             dialogueText.text = "Congrats you win battle!";
+            enemyPokemonFight.currentHealth = enemyPokemonFight.maxHealth;
             battleCanvas.SetActive(false);
-            movesButton.Clear();
         }
         else
         {
             dialogueText.text = "You lose battle!";
             battleCanvas.SetActive(false);
-            movesButton.Clear();
+
         }
         
     }
     #endregion
     public void ShowPlayerPokemon()
     {
-        Debug.Log("HEre");
         bool isAllPokemonDead = false;
         for (int i = 0; i < pokemonInventry.ContainerPokemon.Count; i++)
         {
@@ -312,7 +325,6 @@ public class BattleSystem : MonoBehaviour
         playerPokemon.GetComponent<Transform>().position = playerPokemonTransform.position;
         playerHud.SetPlayerHud(pokemonInventry.ContainerPokemon[pokemonIndexInContainer].item);
         state = BattleState.PLAYERTURN;
-        Debug.Log("CLEAR");
         PlayerTurn();
 
     }

@@ -16,5 +16,6 @@ public class Quest
     public void Complete()
     {
         isActive = false;
+        
     }
 }

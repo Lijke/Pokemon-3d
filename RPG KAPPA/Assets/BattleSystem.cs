@@ -13,6 +13,7 @@ public enum BattleState
 }
 public class BattleSystem : MonoBehaviour
 {
+    public Player player;
    [SerializeField] BattleState state;
     public PokemonObject enemyPokemonFight;
     public PokemonObject playerPokemonFight;
@@ -69,7 +70,7 @@ public class BattleSystem : MonoBehaviour
         playerPokemon.GetComponent<Transform>().position = playerPokemonTransform.position;
         playerHud.SetPlayerHud(pokemonInventry.ContainerPokemon[0].item);
         //ENEMY SPAWN OBJECT + UPDATEUI
-        var enemyPokemon = Instantiate(enemyPokemonFight.prefab_pokemon, Vector3.zero, Quaternion.identity, transform);
+        enemyPokemon = Instantiate(enemyPokemonFight.prefab_pokemon, Vector3.zero, Quaternion.identity, transform);
         enemyPokemon.GetComponent<Transform>().position = enemyPokemonTransform.position;
         enemyHud.SetPlayerHud(enemyPokemonFight);
         dialogueText.text = enemyPokemonFight.namePokemon + " is attacking you!";
@@ -144,7 +145,7 @@ public class BattleSystem : MonoBehaviour
         bool isDead=CheckDamage(enemyPokemonFight);
         if(isDead)
         {
-            EndBattle(false);
+            EndBattle(true);
         }
         else
         {
@@ -276,15 +277,25 @@ public class BattleSystem : MonoBehaviour
     {
         if(isWin)
         {
-            dialogueText.text = "Congrats you win battle!";
-            enemyPokemonFight.currentHealth = enemyPokemonFight.maxHealth;
+            Debug.Log("IsWin");
+            dialogueText.text = "You lose battle!";
+            choseMovesUi.SetActive(false);
+            choseAcctionUi.SetActive(true);
             battleCanvas.SetActive(false);
+            Destroy(playerPokemon);
+            Destroy(enemyPokemon);
+            player.QuestCheckAfterBattle(enemyPokemonFight.namePokemon);
+
         }
         else
         {
+            Debug.Log("lose");
             dialogueText.text = "You lose battle!";
+            choseMovesUi.SetActive(false);
+            choseAcctionUi.SetActive(true);
             battleCanvas.SetActive(false);
-
+            Destroy(playerPokemon);
+            Destroy(enemyPokemon);
         }
         
     }

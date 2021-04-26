@@ -7,20 +7,27 @@ public class Player : MonoBehaviour
     public InventoryObject inventory;
     public PokemonInventory pokemonInventory;
     public List<Quest> quest;
-    public string killedEnemyName;
-    public void Battle()
+    public void QuestCheckAfterBattle(string killedEnemyName)
     {
         //test
         foreach (var item in quest)
         {
             item.questGoal.EnemyKilled(killedEnemyName);
         }
+        
         if(quest[0].isActive)
         {
             quest[0].questGoal.EnemyKilled(killedEnemyName);
             if(quest[0].questGoal.isReached())
             {
                 //dzieje se cos jak sie zsrobi misje
+            }
+        }
+        foreach (var item in quest)
+        {
+            if(item.questGoal.isReached())
+            {
+                item.questGoal.Reward();
             }
         }
     }

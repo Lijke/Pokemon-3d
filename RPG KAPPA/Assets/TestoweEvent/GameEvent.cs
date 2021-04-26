@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 [CreateAssetMenu(menuName = "Game Event",fileName = "New Game Event")]
+[System.Serializable]
 public class GameEvent : ScriptableObject
 {
     HashSet<GameEventListener> listeners = new HashSet<GameEventListener>();
